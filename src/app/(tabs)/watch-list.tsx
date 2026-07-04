@@ -1,3 +1,4 @@
+import EmptyState from "@/components/ui/EmptyState";
 import { ThemeText, ThemeView } from "@/components/ui/Theme";
 import { useMovie } from "@/context/MovieProvider";
 import { useTheme } from "@/hooks/useTheme";
@@ -9,7 +10,7 @@ import { FlatList, Image, TouchableOpacity, View } from "react-native";
 
 const WatchList = () => {
   const theme = useTheme();
-  const { bookMarkedMovies } = useMovie();
+  const { bookMarkedMovies, movieDispatch } = useMovie();
 
   return (
     <ThemeView style={{ flex: 1 }}>
@@ -37,7 +38,11 @@ const WatchList = () => {
 
             <ThemeText type="h1">Watch List</ThemeText>
 
-            <View style={{ width: 20, aspectRatio: 1 }} />
+            <TouchableOpacity
+              onPress={() => movieDispatch({ type: "clearBookMarked" })}
+            >
+              <Ionicons name="trash-outline" size={20} color={theme.accent} />
+            </TouchableOpacity>
           </ThemeView>
         }
         stickyHeaderIndices={[0]}
@@ -110,58 +115,14 @@ const WatchList = () => {
           </View>
         )}
         ListEmptyComponent={
-          <ThemeView
-            themeColor="secondaryBackground"
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              paddingBlock: 32,
-              paddingInline: 20,
-              gap: 8,
-              borderRadius: 20,
-            }}
-          >
-            <View
-              style={{
-                width: 72,
-                aspectRatio: 1,
-                borderRadius: 999,
-                backgroundColor: "rgba(2, 150, 229, 0.1)",
-                borderWidth: 0.5,
-                borderColor: "rgba(2, 150, 229, 0.25)",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: 8,
-              }}
-            >
-              <Ionicons name="film-outline" size={32} color={theme.primary} />
-            </View>
-            <ThemeText type="title" style={{ textAlign: "center" }}>
-              Your watchlist is empty
-            </ThemeText>
-            <ThemeText
-              themeColor="secondaryText"
-              style={{ textAlign: "center", marginBottom: 12 }}
-            >
-              Movies you save will appear here. Start adding films you want to
-              watch.
-            </ThemeText>
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 6,
-                backgroundColor: theme.primary,
-                paddingHorizontal: 28,
-                paddingVertical: 12,
-                borderRadius: 12,
-              }}
-              onPress={() => router.push("/search/a")}
-            >
-              <Ionicons name="add" size={18} color={theme.text} />
-              <ThemeText type="h2">Browse Movies</ThemeText>
-            </TouchableOpacity>
-          </ThemeView>
+          <EmptyState
+            btnAction={() => router.push("/search/a")}
+            btnIcon="add"
+            btnText="Browse Movies"
+            icon="film-outline"
+            subtitle="Movies you save will appear here. Start adding films you want to watch."
+            title="Your watchlist is empty"
+          />
         }
       />
     </ThemeView>

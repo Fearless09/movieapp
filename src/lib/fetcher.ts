@@ -2,7 +2,7 @@ export const BASE_URL = "https://jsonfakery.com/";
 
 export async function fetcher<T>(url: string, init?: RequestInit): Promise<T> {
   try {
-    const response = await fetch(BASE_URL + url, init);
+    const response = await fetch(url, init);
     const data = await response.json();
     return data as T;
   } catch (error) {

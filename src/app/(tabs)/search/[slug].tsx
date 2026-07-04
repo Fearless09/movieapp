@@ -1,10 +1,11 @@
 import MovieCard from "@/components/shared/MovieCard";
 import { SearchBar } from "@/components/shared/Search";
+import EmptyState from "@/components/ui/EmptyState";
 import { ThemeView } from "@/components/ui/Theme";
 import { useMovie } from "@/context/MovieProvider";
 import { RoutePath, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
-import { FlatList } from "react-native";
+import { FlatList, View } from "react-native";
 
 const Search = () => {
   const { slug } = useLocalSearchParams<RoutePath>();
@@ -27,6 +28,8 @@ const Search = () => {
   useFocusEffect(
     useCallback(() => {
       if (transFormedSlug) setSearch(transFormedSlug);
+
+      return () => setSearch("");
     }, [transFormedSlug]),
   );
 
@@ -41,19 +44,31 @@ const Search = () => {
             onChangeText={(text) => setSearch(text)}
           />
         }
-        contentContainerStyle={{ paddingInline: 20 }}
+        contentContainerStyle={{ paddingInline: 20, paddingBottom: 90 }}
         columnWrapperStyle={{
-          marginTop: 20,
           gap: 16,
           flex: 1,
           flexWrap: "wrap",
+          marginTop: 20,
         }}
         stickyHeaderIndices={[0]}
         numColumns={2}
-        keyExtractor={(movie) => movie.movie_id.toString()}
+        keyExtractor={(movie) => `${movie.movie_id}`}
         renderItem={({ item }) => (
           <MovieCard key={item.movie_id} movie={item} width={"47.77%"} />
         )}
+        ListEmptyComponent={
+          <View style={{ marginTop: 20 }}>
+            <EmptyState
+              btnAction={() => setSearch("")}
+              btnText="Clear Search"
+              icon="search-outline"
+              subtitle="Try searching for a different title, actor, or genre"
+              title={`No results for "${search}"`}
+              btnIcon="trash-outline"
+            />
+          </View>
+        }
       />
     </ThemeView>
   );

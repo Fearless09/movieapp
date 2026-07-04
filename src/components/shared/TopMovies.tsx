@@ -14,7 +14,7 @@ const TopMovies = () => {
         data={topMovies}
         horizontal
         contentContainerStyle={{ marginTop: 20 }}
-        keyExtractor={(movie) => movie.movie_id.toString()}
+        keyExtractor={(movie) => `${movie.movie_id}`}
         renderItem={({ item: movie, index }) => (
           <TouchableOpacity
             onPress={() => router.push(`/movie/${movie.movie_id}`)}
