@@ -39,7 +39,7 @@ type State = {
 
 type MovieContextType = State & {
   movieDispatch: (action: Action) => void;
-  fetchMore: () => Promise<void>;
+  fetchMore: (refresh?: boolean) => Promise<void>;
 };
 
 const initialState: State = {
@@ -93,10 +93,18 @@ const MovieProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [fetcher]);
 
-  const fetchMore = useCallback(async () => {
-    if (!stateRef.current.next_page_url) return;
-    await fetchMovies();
-  }, [fetchMovies]);
+  const fetchMore = useCallback(
+    async (refresh: boolean = false) => {
+      if (refresh) {
+        await fetchMovies();
+        return;
+      }
+
+      if (!stateRef.current.next_page_url) return;
+      await fetchMovies();
+    },
+    [fetchMovies],
+  );
 
   useEffect(() => {
     stateRef.current = state;

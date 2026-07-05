@@ -3,10 +3,11 @@ import { useTheme } from "@/hooks/useTheme";
 import { Movie } from "@/lib/type";
 import { textStyles } from "@/styles/styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Image } from "expo-image";
 import { Link, router } from "expo-router";
 import React from "react";
 import {
-  Image,
+  StyleSheet,
   TextInput,
   TextInputProps,
   TouchableOpacity,
@@ -18,31 +19,15 @@ export const SearchBar = ({ style, ...props }: SearchBarProps) => {
   const theme = useTheme();
 
   return (
-    <ThemeView
-      style={{
-        marginTop: 10,
-        position: "relative",
-        flexDirection: "row",
-        borderRadius: 999,
-        overflow: "hidden",
-        paddingRight: 20,
-        gap: 4,
-        alignItems: "center",
-      }}
-      themeColor="secondaryBackground"
-    >
+    <ThemeView style={searchBarStyle.wrapper} themeColor="secondaryBackground">
       <TextInput
         inputMode="search"
         placeholder="Search"
         placeholderTextColor={theme.secondaryText}
         style={[
           textStyles.input,
-          {
-            flex: 1,
-            height: 42,
-            paddingLeft: 20,
-            color: theme.text,
-          },
+          searchBarStyle.input,
+          { color: theme.text },
           style,
         ]}
         returnKeyType="search"
@@ -64,6 +49,24 @@ export const SearchBar = ({ style, ...props }: SearchBarProps) => {
   );
 };
 
+const searchBarStyle = StyleSheet.create({
+  wrapper: {
+    marginTop: 10,
+    position: "relative",
+    flexDirection: "row",
+    borderRadius: 999,
+    overflow: "hidden",
+    paddingRight: 20,
+    gap: 4,
+    alignItems: "center",
+  },
+  input: {
+    flex: 1,
+    height: 42,
+    paddingLeft: 20,
+  },
+});
+
 type SearchResultProps = {
   movies: Movie[];
 };
@@ -76,66 +79,47 @@ export const SearchResult = ({ movies }: SearchResultProps) => {
     <ThemeView
       scrollable
       themeColor="secondaryBackground"
-      style={{
-        padding: 10,
-        borderRadius: 16,
-        position: "absolute",
-        width: "100%",
-        left: 0,
-        top: "100%",
-        marginTop: 5,
-        maxHeight: 200,
-        zIndex: 10,
-      }}
+      style={searchResultStyle.wrapper}
     >
       {movies.map((movie, idx) => (
-        <React.Fragment key={movie.movie_id}>
+        <React.Fragment key={`${movie.movie_id}`}>
           {idx > 0 && (
             <View
-              style={{
-                height: 1,
-                width: "97%",
-                alignSelf: "center",
-                backgroundColor: theme.background,
-                marginTop: idx === 0 ? 0 : 6,
-              }}
+              style={[
+                searchResultStyle.divider,
+                {
+                  backgroundColor: theme.background,
+                  marginTop: idx === 0 ? 0 : 6,
+                },
+              ]}
             />
           )}
 
           <TouchableOpacity
             onPress={() => router.push(`/movie/${movie.movie_id}`)}
-            style={{
-              flexDirection: "row",
-              gap: 12,
-              alignItems: "center",
-              marginTop: idx === 0 ? 0 : 6,
-            }}
+            style={[searchResultStyle.card, { marginTop: idx === 0 ? 0 : 6 }]}
           >
+            {/* Image */}
             <ThemeView
               themeColor="secondaryBackground"
-              style={{
-                width: 44,
-                aspectRatio: 1,
-                overflow: "hidden",
-                borderRadius: 8,
-                flexShrink: 0,
-              }}
+              style={searchResultStyle.imgWrapper}
             >
               <Image
-                source={{ uri: movie.backdrop_path }}
-                style={{ width: "100%", height: "100%" }}
-                resizeMode="center"
+                source={{ uri: movie.poster_path }}
+                style={searchResultStyle.img}
+                contentFit="cover"
+                contentPosition={"center"}
               />
             </ThemeView>
 
-            <View style={{ flex: 1, gap: 4 }}>
+            {/* Info */}
+            <View style={searchResultStyle.infoWrapper}>
               <ThemeText numberOfLines={1} type="h2">
                 {movie.original_title}
               </ThemeText>
 
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 3 }}
-              >
+              {/* Rating */}
+              <View style={searchResultStyle.ratingWrapper}>
                 <Ionicons name="star" size={10} color={theme.primary} />
                 <ThemeText themeColor="secondaryText">
                   {movie.vote_average.toFixed(1)}
@@ -143,9 +127,10 @@ export const SearchResult = ({ movies }: SearchResultProps) => {
               </View>
             </View>
 
+            {/* Year */}
             <ThemeView
               themeColor="background"
-              style={{ borderRadius: 10, paddingBlock: 2.5, paddingInline: 7 }}
+              style={searchResultStyle.yearWrapper}
             >
               <ThemeText themeColor="secondaryText">
                 {movie.release_date.slice(-4)}
@@ -157,3 +142,52 @@ export const SearchResult = ({ movies }: SearchResultProps) => {
     </ThemeView>
   );
 };
+
+const searchResultStyle = StyleSheet.create({
+  wrapper: {
+    padding: 10,
+    borderRadius: 16,
+    position: "absolute",
+    width: "100%",
+    left: 0,
+    top: "100%",
+    marginTop: 5,
+    maxHeight: 200,
+    zIndex: 10,
+  },
+  divider: {
+    height: 1,
+    width: "97%",
+    alignSelf: "center",
+  },
+  card: {
+    flexDirection: "row",
+    gap: 12,
+    alignItems: "center",
+  },
+  imgWrapper: {
+    width: 44,
+    aspectRatio: 1 / 1.1,
+    overflow: "hidden",
+    borderRadius: 8,
+    flexShrink: 0,
+  },
+  img: {
+    width: "100%",
+    height: "100%",
+  },
+  infoWrapper: {
+    flex: 1,
+    gap: 4,
+  },
+  ratingWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 3,
+  },
+  yearWrapper: {
+    borderRadius: 10,
+    paddingVertical: 2.5,
+    paddingHorizontal: 7,
+  },
+});

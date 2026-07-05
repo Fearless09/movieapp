@@ -4,34 +4,22 @@ import { useMovie } from "@/context/MovieProvider";
 import { useTheme } from "@/hooks/useTheme";
 import { globalStyles, ThemeColor } from "@/styles/styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Image } from "expo-image";
 import { router } from "expo-router";
 import { ComponentProps } from "react";
-import { FlatList, Image, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 
 const WatchList = () => {
   const theme = useTheme();
   const { bookMarkedMovies, movieDispatch } = useMovie();
 
   return (
-    <ThemeView style={{ flex: 1 }}>
+    <ThemeView style={style.wrapper}>
       <FlatList
         data={bookMarkedMovies}
         keyExtractor={(movie) => movie.movie_id.toString()}
         ListHeaderComponent={
-          <ThemeView
-            style={[
-              globalStyles.container,
-              {
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: 4,
-                marginBottom: 34,
-                paddingBottom: 6,
-                paddingInline: 0,
-              },
-            ]}
-          >
+          <ThemeView style={[globalStyles.container, style.header]}>
             <TouchableOpacity onPress={() => router.back()}>
               <Ionicons name="chevron-back" size={20} color={theme.text} />
             </TouchableOpacity>
@@ -47,48 +35,32 @@ const WatchList = () => {
         }
         stickyHeaderIndices={[0]}
         initialNumToRender={6}
-        contentContainerStyle={{ paddingInline: 20, paddingBottom: 90 }}
+        contentContainerStyle={style.contentContainer}
         renderItem={({ item: movie, index }) => (
-          <View
-            key={movie.movie_id}
-            style={{
-              flexDirection: "row",
-              gap: 12,
-              marginTop: index === 0 ? 0 : 24,
-            }}
-          >
+          <View style={[style.card, { marginTop: index === 0 ? 0 : 24 }]}>
             {/* Image */}
             <TouchableOpacity
               onPress={() => router.push(`/movie/${movie.movie_id}`)}
             >
               <ThemeView
                 themeColor="secondaryBackground"
-                style={{
-                  width: 95,
-                  aspectRatio: 95 / 120,
-                  overflow: "hidden",
-                  borderRadius: 16,
-                }}
+                style={style.imgWrapper}
               >
                 <Image
                   source={{ uri: movie.poster_path }}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  style={style.img}
+                  contentFit="cover"
+                  contentPosition={"center"}
                 />
               </ThemeView>
             </TouchableOpacity>
 
             {/* Details */}
-            <View
-              style={{
-                flex: 1,
-                paddingBlock: 6,
-                gap: 6,
-              }}
-            >
+            <View style={style.detailWrapper}>
               <TouchableOpacity
                 onPress={() => router.push(`/movie/${movie.movie_id}`)}
               >
-                <ThemeText type="title" numberOfLines={1}>
+                <ThemeText type="title" numberOfLines={2}>
                   {movie.original_title}
                 </ThemeText>
               </TouchableOpacity>
@@ -140,9 +112,51 @@ type TapProps = {
 const TagComponent = ({ icon, title, top = 0, color = "text" }: TapProps) => {
   const theme = useTheme();
   return (
-    <View style={{ marginTop: top, flexDirection: "row", gap: 4 }}>
+    <View style={[style.tagWrapper, { marginTop: top }]}>
       <Ionicons name={icon} size={16} color={theme[color]} />
       <ThemeText themeColor={color}>{title}</ThemeText>
     </View>
   );
 };
+
+const style = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 4,
+    marginBottom: 34,
+    paddingBottom: 6,
+    paddingHorizontal: 0,
+  },
+  contentContainer: {
+    paddingInline: 20,
+    paddingBottom: 90,
+  },
+  card: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  imgWrapper: {
+    width: 95,
+    height: 120,
+    overflow: "hidden",
+    borderRadius: 16,
+  },
+  img: {
+    width: "100%",
+    height: "100%",
+  },
+  detailWrapper: {
+    flex: 1,
+    paddingBlock: 6,
+    gap: 6,
+  },
+  tagWrapper: {
+    flexDirection: "row",
+    gap: 4,
+  },
+});

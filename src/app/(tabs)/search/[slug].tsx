@@ -5,7 +5,7 @@ import { ThemeView } from "@/components/ui/Theme";
 import { useMovie } from "@/context/MovieProvider";
 import { RoutePath, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
 const Search = () => {
   const { slug } = useLocalSearchParams<RoutePath>();
@@ -34,7 +34,7 @@ const Search = () => {
   );
 
   return (
-    <ThemeView style={{ flex: 1 }}>
+    <ThemeView style={style.wrapper}>
       <FlatList
         data={searchResults}
         ListHeaderComponent={
@@ -44,21 +44,14 @@ const Search = () => {
             onChangeText={(text) => setSearch(text)}
           />
         }
-        contentContainerStyle={{ paddingInline: 20, paddingBottom: 90 }}
-        columnWrapperStyle={{
-          gap: 16,
-          flex: 1,
-          flexWrap: "wrap",
-          marginTop: 20,
-        }}
+        contentContainerStyle={style.contentContainer}
+        columnWrapperStyle={style.columnWrapper}
         stickyHeaderIndices={[0]}
         numColumns={2}
         keyExtractor={(movie) => `${movie.movie_id}`}
-        renderItem={({ item }) => (
-          <MovieCard key={item.movie_id} movie={item} width={"47.77%"} />
-        )}
+        renderItem={({ item }) => <MovieCard movie={item} width={"47.77%"} />}
         ListEmptyComponent={
-          <View style={{ marginTop: 20 }}>
+          <View style={style.listEmptyWrapper}>
             <EmptyState
               btnAction={() => setSearch("")}
               btnText="Clear Search"
@@ -75,3 +68,22 @@ const Search = () => {
 };
 
 export default Search;
+
+const style = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+  },
+  contentContainer: {
+    paddingInline: 20,
+    paddingBottom: 90,
+  },
+  columnWrapper: {
+    gap: 16,
+    flex: 1,
+    flexWrap: "wrap",
+    marginTop: 20,
+  },
+  listEmptyWrapper: {
+    marginTop: 20,
+  },
+});
