@@ -28,6 +28,7 @@ const WatchList = () => {
 
             <TouchableOpacity
               onPress={() => movieDispatch({ type: "clearBookMarked" })}
+              disabled={!bookMarkedMovies.length}
             >
               <Ionicons name="trash-outline" size={20} color={theme.accent} />
             </TouchableOpacity>
