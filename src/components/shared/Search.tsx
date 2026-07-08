@@ -5,8 +5,8 @@ import { textStyles } from "@/styles/styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
 import { Link, router } from "expo-router";
-import React from "react";
 import {
+  FlatList,
   StyleSheet,
   TextInput,
   TextInputProps,
@@ -81,23 +81,14 @@ export const SearchResult = ({ movies }: SearchResultProps) => {
       themeColor="secondaryBackground"
       style={searchResultStyle.wrapper}
     >
-      {movies.map((movie, idx) => (
-        <React.Fragment key={`${movie.movie_id}`}>
-          {idx > 0 && (
-            <View
-              style={[
-                searchResultStyle.divider,
-                {
-                  backgroundColor: theme.background,
-                  marginTop: idx === 0 ? 0 : 6,
-                },
-              ]}
-            />
-          )}
-
+      <FlatList
+        data={movies}
+        keyExtractor={(movie) => `${movie.movie_id}`}
+        keyboardDismissMode="on-drag"
+        renderItem={({ item: movie }) => (
           <TouchableOpacity
             onPress={() => router.push(`/movie/${movie.movie_id}`)}
-            style={[searchResultStyle.card, { marginTop: idx === 0 ? 0 : 6 }]}
+            style={[searchResultStyle.card]}
           >
             {/* Image */}
             <ThemeView
@@ -137,8 +128,14 @@ export const SearchResult = ({ movies }: SearchResultProps) => {
               </ThemeText>
             </ThemeView>
           </TouchableOpacity>
-        </React.Fragment>
-      ))}
+        )}
+        ItemSeparatorComponent={
+          <ThemeView
+            themeColor="background"
+            style={searchResultStyle.divider}
+          />
+        }
+      />
     </ThemeView>
   );
 };
@@ -159,6 +156,7 @@ const searchResultStyle = StyleSheet.create({
     height: 1,
     width: "97%",
     alignSelf: "center",
+    marginVertical: 6,
   },
   card: {
     flexDirection: "row",

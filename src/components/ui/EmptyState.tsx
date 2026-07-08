@@ -25,7 +25,15 @@ const EmptyState = ({
 
   return (
     <ThemeView themeColor="secondaryBackground" style={style.wrapper}>
-      <View style={style.iconWrapper}>
+      <View
+        style={[
+          style.iconWrapper,
+          {
+            backgroundColor: theme.primary + 20,
+            borderColor: theme.primary + 30,
+          },
+        ]}
+      >
         <Ionicons name={icon} size={32} color={theme.primary} />
       </View>
 
@@ -62,9 +70,7 @@ const style = StyleSheet.create({
     width: 72,
     aspectRatio: 1,
     borderRadius: 999,
-    backgroundColor: "rgba(2, 150, 229, 0.1)",
     borderWidth: 0.5,
-    borderColor: "rgba(2, 150, 229, 0.25)",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 8,

@@ -17,66 +17,59 @@ const TopMovies = () => {
   const { topMovies, loading, fetchMore } = useMovie();
 
   return (
-    <>
-      <FlatList
-        data={topMovies}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={style.contentContainer}
-        keyExtractor={(movie) => `${movie.movie_id}`}
-        renderItem={({ item: movie, index }) => (
-          <TouchableOpacity
-            onPress={() => router.push(`/movie/${movie.movie_id}`)}
+    <FlatList
+      data={topMovies}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={style.contentContainer}
+      keyExtractor={(movie) => `${movie.movie_id}`}
+      renderItem={({ item: movie, index }) => (
+        <TouchableOpacity
+          onPress={() => router.push(`/movie/${movie.movie_id}`)}
+          style={[style.card, { backgroundColor: theme.secondaryBackground }]}
+        >
+          <Image
+            source={{ uri: movie.poster_path }}
+            style={style.poster}
+            contentFit="cover"
+            contentPosition={"center"}
+          />
+
+          <Text
             style={[
-              style.card,
+              style.rank,
               {
-                backgroundColor: theme.secondaryBackground,
-                marginLeft: index === 0 ? 0 : 20,
+                textShadowColor: theme.primary,
+                color: theme.secondaryBackground,
               },
             ]}
           >
-            <Image
-              source={{ uri: movie.poster_path }}
-              style={style.poster}
-              contentFit="cover"
-              contentPosition={"center"}
+            {index + 1}
+          </Text>
+        </TouchableOpacity>
+      )}
+      ItemSeparatorComponent={<View style={style.itemSeparator} />}
+      ListEmptyComponent={
+        <View style={style.listEmptyContainer}>
+          {loading ? (
+            <View style={style.skeletonContainer}>
+              {Array.from({ length: 3 }).map((_, index) => (
+                <Skeleton style={style.skeleton} key={`skeleton-${index}`} />
+              ))}
+            </View>
+          ) : (
+            <EmptyState
+              btnAction={() => fetchMore(true)}
+              btnText="Refresh"
+              icon="film-outline"
+              subtitle="We couldn't find any movies at the moment. Check back later."
+              title="No Top Movies Available"
+              btnIcon="refresh-outline"
             />
-
-            <Text
-              style={[
-                style.rank,
-                {
-                  textShadowColor: theme.primary,
-                  color: theme.secondaryBackground,
-                },
-              ]}
-            >
-              {index + 1}
-            </Text>
-          </TouchableOpacity>
-        )}
-        ListEmptyComponent={
-          <View style={style.listEmptyContainer}>
-            {loading ? (
-              <View style={style.skeletonContainer}>
-                {Array.from({ length: 3 }).map((_, index) => (
-                  <Skeleton style={style.skeleton} key={`skeleton-${index}`} />
-                ))}
-              </View>
-            ) : (
-              <EmptyState
-                btnAction={() => fetchMore(true)}
-                btnText="Refresh"
-                icon="film-outline"
-                subtitle="We couldn't find any movies at the moment. Check back later."
-                title="No Top Movies Available"
-                btnIcon="refresh-outline"
-              />
-            )}
-          </View>
-        }
-      />
-    </>
+          )}
+        </View>
+      }
+    />
   );
 };
 
@@ -85,6 +78,9 @@ export default TopMovies;
 const style = StyleSheet.create({
   contentContainer: {
     marginTop: 20,
+  },
+  itemSeparator: {
+    width: 20,
   },
   card: {
     position: "relative",

@@ -13,13 +13,11 @@ const TabLayout = () => {
     <NativeTabs
       backgroundColor={colors.background}
       indicatorColor={colors.primary}
-      labelStyle={{ selected: { color: colors.text } }}
+      tintColor={colors.primary}
     >
-      {tabs.map(({ icon, label, name }) => (
+      {tabs.map(({ icon, name }) => (
         <NativeTabs.Trigger key={name} name={name}>
-          <NativeTabs.Trigger.Label selectedStyle={{ color: colors.primary }}>
-            {label}
-          </NativeTabs.Trigger.Label>
+          <NativeTabs.Trigger.Label hidden />
           <NativeTabs.Trigger.Icon
             renderingMode="template"
             src={<VectorIcon family={Ionicons} name={icon} />}

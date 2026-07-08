@@ -1,24 +1,18 @@
-import { useTheme } from "@/hooks/useTheme";
 import { Cast } from "@/lib/type";
 import { Image } from "expo-image";
 import { StyleSheet, View } from "react-native";
-import { ThemeText } from "../ui/Theme";
+import { ThemeText, ThemeView } from "../ui/Theme";
 
 type CastProp = {
   cast: Cast;
-  index: number;
 };
-const MovieCast = ({ cast, index }: CastProp) => {
-  const theme = useTheme();
-
+const MovieCast = ({ cast }: CastProp) => {
   return (
-    <View style={[style.wrapper, { marginTop: index === 0 ? 0 : 12 }]}>
+    <View style={style.wrapper}>
       {/* Profile Image */}
-      <View
-        style={[
-          style.profileImgWrapper,
-          { backgroundColor: theme.secondaryBackground },
-        ]}
+      <ThemeView
+        themeColor="secondaryBackground"
+        style={style.profileImgWrapper}
       >
         <Image
           source={{ uri: cast.profile_path }}
@@ -26,7 +20,7 @@ const MovieCast = ({ cast, index }: CastProp) => {
           contentFit="cover"
           contentPosition={"center"}
         />
-      </View>
+      </ThemeView>
 
       {/* Info */}
       <View style={style.infoWrapper}>

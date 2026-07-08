@@ -52,10 +52,10 @@ export const Fonts = Platform.select({
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 25,
+    paddingTop: 20,
     paddingHorizontal: 20,
   },
-} as const);
+});
 
 export const textStyles = StyleSheet.create({
   h1: {

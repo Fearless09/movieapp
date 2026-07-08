@@ -63,12 +63,7 @@ const Header = ({ movie, onTabChange, activeTab }: HeaderProp) => {
       </View>
 
       {/* Banner */}
-      <View
-        style={[
-          style.bannerWrapper,
-          { backgroundColor: theme.secondaryBackground },
-        ]}
-      >
+      <ThemeView themeColor="secondaryBackground" style={style.bannerWrapper}>
         <Image
           source={{ uri: movie.backdrop_path }}
           style={style.bannerImg}
@@ -82,7 +77,7 @@ const Header = ({ movie, onTabChange, activeTab }: HeaderProp) => {
             {movie.vote_average.toFixed(1)}
           </ThemeText>
         </ThemeView>
-      </View>
+      </ThemeView>
 
       {/* Title and Poster */}
       <View style={style.detailsWrapper}>

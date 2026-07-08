@@ -55,6 +55,7 @@ export default function Index() {
         numColumns={3}
         initialNumToRender={6}
         data={movies}
+        keyboardDismissMode="on-drag"
         contentContainerStyle={style.contentContainer}
         keyExtractor={(movie) => `${movie.movie_id}`}
         renderItem={({ item: movie }) => <MovieCard movie={movie} />}

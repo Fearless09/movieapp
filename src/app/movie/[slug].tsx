@@ -41,9 +41,8 @@ const MovieBySlug = () => {
         stickyHeaderIndices={[0]}
         initialNumToRender={6}
         contentContainerStyle={style.contentContainer}
-        renderItem={({ item, index }) => (
-          <MovieCast cast={item} index={index} />
-        )}
+        renderItem={({ item }) => <MovieCast cast={item} />}
+        ItemSeparatorComponent={<View style={style.itemSeparator} />}
         ListEmptyComponent={
           <View style={style.emptyWrapper}>
             {activeTab === "about" ? (
@@ -75,5 +74,8 @@ const style = StyleSheet.create({
   },
   emptyWrapper: {
     paddingHorizontal: 20,
+  },
+  itemSeparator: {
+    height: 12,
   },
 });

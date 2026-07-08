@@ -44,6 +44,7 @@ const Search = () => {
             onChangeText={(text) => setSearch(text)}
           />
         }
+        keyboardDismissMode="on-drag"
         contentContainerStyle={style.contentContainer}
         columnWrapperStyle={style.columnWrapper}
         stickyHeaderIndices={[0]}
