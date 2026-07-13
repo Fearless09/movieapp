@@ -1,5 +1,6 @@
 import { useMovie } from "@/context/MovieProvider";
 import { useTheme } from "@/hooks/useTheme";
+import { blurhash } from "@/lib/utils";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import {
@@ -30,6 +31,7 @@ const TopMovies = () => {
         >
           <Image
             source={{ uri: movie.poster_path }}
+            placeholder={{ blurhash }}
             style={style.poster}
             contentFit="cover"
             contentPosition={"center"}

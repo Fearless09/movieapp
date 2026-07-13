@@ -12,6 +12,10 @@
         "dark": "./assets/icon.png",
         "light": "./assets/icon.png",
         "tinted": "./assets/icon.png"
+      },
+      "bundleIdentifier": "com.ope-yemi.movieapp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {

@@ -1,6 +1,7 @@
 import { ThemeText, ThemeView } from "@/components/ui/Theme";
 import { useTheme } from "@/hooks/useTheme";
 import { Movie } from "@/lib/type";
+import { blurhash } from "@/lib/utils";
 import { textStyles } from "@/styles/styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
@@ -100,6 +101,7 @@ export const SearchResult = ({ movies }: SearchResultProps) => {
                 style={searchResultStyle.img}
                 contentFit="cover"
                 contentPosition={"center"}
+                placeholder={{ blurhash }}
               />
             </ThemeView>
 

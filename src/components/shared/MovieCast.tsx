@@ -1,4 +1,5 @@
 import { Cast } from "@/lib/type";
+import { blurhash } from "@/lib/utils";
 import { Image } from "expo-image";
 import { StyleSheet, View } from "react-native";
 import { ThemeText, ThemeView } from "../ui/Theme";
@@ -19,6 +20,7 @@ const MovieCast = ({ cast }: CastProp) => {
           style={style.profileImg}
           contentFit="cover"
           contentPosition={"center"}
+          placeholder={{ blurhash }}
         />
       </ThemeView>
 

@@ -3,6 +3,7 @@ import { ThemeText, ThemeView } from "@/components/ui/Theme";
 import { useMovie } from "@/context/MovieProvider";
 import { useTheme } from "@/hooks/useTheme";
 import { Movie } from "@/lib/type";
+import { blurhash } from "@/lib/utils";
 import { globalStyles, ThemeColor } from "@/styles/styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
@@ -90,6 +91,7 @@ const RenderItem = ({ movie }: { movie: Movie }) => {
             style={style.img}
             contentFit="cover"
             contentPosition={"center"}
+            placeholder={{ blurhash }}
           />
         </ThemeView>
       </TouchableOpacity>

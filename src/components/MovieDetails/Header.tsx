@@ -1,6 +1,7 @@
 import { useMovie } from "@/context/MovieProvider";
 import { useTheme } from "@/hooks/useTheme";
 import { Movie } from "@/lib/type";
+import { blurhash } from "@/lib/utils";
 import { globalStyles } from "@/styles/styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
@@ -69,6 +70,7 @@ const Header = ({ movie, onTabChange, activeTab }: HeaderProp) => {
           style={style.bannerImg}
           contentPosition={"center"}
           contentFit="cover"
+          placeholder={{ blurhash }}
         />
 
         <ThemeView themeColor="background" style={style.bannerTagWrapper}>
@@ -88,6 +90,7 @@ const Header = ({ movie, onTabChange, activeTab }: HeaderProp) => {
               style.posterImg,
               { backgroundColor: theme.secondaryBackground },
             ]}
+            placeholder={{ blurhash }}
           />
         </View>
 

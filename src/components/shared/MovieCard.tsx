@@ -1,5 +1,6 @@
 import { useTheme } from "@/hooks/useTheme";
 import { Movie } from "@/lib/type";
+import { blurhash } from "@/lib/utils";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import {
@@ -31,6 +32,7 @@ const MovieCard = ({ movie, width = "30.35%" }: MovieCardProps) => {
         contentFit="cover"
         contentPosition={"center"}
         transition={300}
+        placeholder={{ blurhash }}
       />
 
       {/* Info */}
